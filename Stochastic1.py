@@ -1,3 +1,6 @@
+#HOOOI
+
+
 #Mandelbrot generator
 import numpy as np
 from PIL import Image
