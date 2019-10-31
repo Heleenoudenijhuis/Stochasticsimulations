@@ -1,10 +1,9 @@
-#HOOOI
-
-
 #Mandelbrot generator
 import numpy as np
 from PIL import Image
 import random
+import os
+import copy
 
 
 PIXEL_SCALE = 200
@@ -16,31 +15,20 @@ YSTART = -1.5
 image_width = int(PIXEL_SCALE*WIDTH)
 image_height = int(PIXEL_SCALE*HEIGHT)
 count2 = 0
+pixels = image_height * image_width
+mandelbrot_iterations = 50
+iterations = 1 * pixels
 
-def calc(c1, c2):
+print('Vergeet de file niet aan te passen naar heleen ipv alwan')
+file = 'results/alwan.txt'
+
+def calc(c1, c2, iterations):
     x = y = 0
-    for i in range(50):
+    for i in range(iterations):
         x, y = x*x - y*y + c1, 2*x*y + c2
         if x*x + y*y > 4:
             return i+1
     return 0
-
-array = np.zeros((image_height,
-                  image_width,
-                  3),
-                 dtype=np.uint8)
-
-for i in range(image_width):
-    c1 = XSTART + i/PIXEL_SCALE
-    for j in range(image_height):
-        c2 = YSTART + j/PIXEL_SCALE
-        v = calc(c1, c2)
-        if v:
-            array[j, i,] = (255, 255, 255)
-            count2 += 1
-
-img = Image.fromarray(array)
-img.show()
 
 
 
@@ -55,20 +43,51 @@ def hitandmiss(iterations):
             count += 1
         array[randomh, randomw,] = (255,69,0)
 
-    img2 = Image.fromarray(array)
-    img2.show()
+    # img2 = Image.fromarray(array)
+    # img2.show()
     return count
 
 
 
-#Statistical analysis
-area = hitandmiss(1000000)
 
-#Calculating values
-area_image = image_height * image_width
-fraction_hitmiss = area / area_image
-area_true = area_image - count2
-fraction_true = area_true / area_image
+if not os.path.exists('results'):
+    os.mkdir('results')
 
-print(fraction_hitmiss, fraction_true)
+if not os.path.exists(file):
+    with open(file, 'w') as f:
+        f.write('')
+
+array = np.zeros((image_height,
+                  image_width,
+                  3),
+                 dtype=np.uint8)
+for i in range(image_width):
+    c1 = XSTART + i/PIXEL_SCALE
+    for j in range(image_height):
+        c2 = YSTART + j/PIXEL_SCALE
+        v = calc(c1, c2, mandelbrot_iterations)
+        if v:
+            array[j, i,] = (255, 255, 255)
+            count2 += 1
+# img = Image.fromarray(array)
+# img.show()
+
+mandelbrot_array = copy.deepcopy(array)
+
+for run in range(6):
+    array = copy.deepcopy(mandelbrot_array)
+
+
+
+
+    #Statistical analysis
+    area = hitandmiss(iterations)
+
+    #Calculating values
+    fraction_hitmiss = area / pixels
+    area_true = pixels - count2
+    fraction_true = area_true / pixels
+    with open(file, 'a') as save_file:
+        save_file.write(str(pixels) + ',' + str(mandelbrot_iterations) + ',' + str(iterations) 
+             + ',' + str(area) + ',' + str(area_true) + ',' + str(fraction_true) + '\n')
 
