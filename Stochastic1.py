@@ -4,23 +4,16 @@ from PIL import Image
 import random
 import os
 import copy
+import time
 
 
-PIXEL_SCALE = 200
+
+file = 'results/alwan.txt'
 WIDTH = 3
 HEIGHT = 3
 XSTART = -2
 YSTART = -1.5
 
-image_width = int(PIXEL_SCALE*WIDTH)
-image_height = int(PIXEL_SCALE*HEIGHT)
-count2 = 0
-pixels = image_height * image_width
-mandelbrot_iterations = 50
-iterations = 1 * pixels
-
-print('Vergeet de file niet aan te passen naar heleen ipv alwan')
-file = 'results/alwan.txt'
 
 def calc(c1, c2, iterations):
     x = y = 0
@@ -48,8 +41,6 @@ def hitandmiss(iterations):
     return count
 
 
-
-
 if not os.path.exists('results'):
     os.mkdir('results')
 
@@ -57,37 +48,53 @@ if not os.path.exists(file):
     with open(file, 'w') as f:
         f.write('')
 
-array = np.zeros((image_height,
-                  image_width,
-                  3),
-                 dtype=np.uint8)
-for i in range(image_width):
-    c1 = XSTART + i/PIXEL_SCALE
-    for j in range(image_height):
-        c2 = YSTART + j/PIXEL_SCALE
-        v = calc(c1, c2, mandelbrot_iterations)
-        if v:
-            array[j, i,] = (255, 255, 255)
-            count2 += 1
-# img = Image.fromarray(array)
-# img.show()
+for PIXEL_SCALE in range(100, 1000, 100):
 
-mandelbrot_array = copy.deepcopy(array)
 
-for run in range(6):
-    array = copy.deepcopy(mandelbrot_array)
+    image_width = int(PIXEL_SCALE*WIDTH)
+    image_height = int(PIXEL_SCALE*HEIGHT)
+    pixels = image_height * image_width
+    for c in np.arange(700,900, 100):
+        iterations = int(c * pixels)
+        for mandelbrot_iterations in range(10, 100, 5): 
+            count2 = 0
 
 
 
+            array = np.zeros((image_height,
+                              image_width,
+                              3),
+                             dtype=np.uint8)
+            for i in range(image_width):
+                c1 = XSTART + i/PIXEL_SCALE
+                for j in range(image_height):
+                    c2 = YSTART + j/PIXEL_SCALE
+                    v = calc(c1, c2, mandelbrot_iterations)
+                    if v:
+                        array[j, i,] = (255, 255, 255)
+                        count2 += 1
+            # img = Image.fromarray(array)
+            # img.show()
 
-    #Statistical analysis
-    area = hitandmiss(iterations)
+            mandelbrot_array = copy.deepcopy(array)
 
-    #Calculating values
-    fraction_hitmiss = area / pixels
-    area_true = pixels - count2
-    fraction_true = area_true / pixels
-    with open(file, 'a') as save_file:
-        save_file.write(str(pixels) + ',' + str(mandelbrot_iterations) + ',' + str(iterations) 
-             + ',' + str(area) + ',' + str(area_true) + ',' + str(fraction_true) + '\n')
+            for run in range(20):
+                start = time.time()
+                array = copy.deepcopy(mandelbrot_array)
 
+
+
+
+            #Statistical analysis
+                area = hitandmiss(iterations)
+
+                #Calculating values
+                fraction_hitmiss = area / pixels
+                area_true = pixels - count2
+                fraction_true = area_true / pixels
+                duration = time.time() - start
+                with open(file, 'a') as save_file:
+                    save_file.write(str(pixels) + ',' + str(mandelbrot_iterations) + ',' + str(iterations) 
+                         + ',' + str(area) + ',' + str(area_true) + ',' + str(fraction_true) + ',' + str(round(duration,2)) + '\n')
+
+                print('pixel: ', PIXEL_SCALE, 'mandel iter: ', mandelbrot_iterations, 'run: ', run, duration)
