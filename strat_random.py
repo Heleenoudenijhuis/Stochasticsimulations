@@ -8,7 +8,7 @@ import time
 
 
 
-file = 'results/alwan_random_strat.txt'
+file = 'results/heleen.txt'
 WIDTH = 3
 HEIGHT = 3
 XSTART = -2

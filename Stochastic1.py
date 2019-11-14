@@ -8,7 +8,7 @@ import time
 
 
 
-file = 'results/alwan.txt'
+file = 'results/Heleen.txt'
 WIDTH = 3
 HEIGHT = 3
 XSTART = -2
@@ -48,15 +48,15 @@ if not os.path.exists(file):
     with open(file, 'w') as f:
         f.write('')
 
-for PIXEL_SCALE in range(100, 1000, 100):
+for PIXEL_SCALE in range(100, 2000, 100):
 
 
     image_width = int(PIXEL_SCALE*WIDTH)
     image_height = int(PIXEL_SCALE*HEIGHT)
     pixels = image_height * image_width
-    for c in np.arange(700,900, 100):
+    for c in np.arange(700,900, 200):
         iterations = int(c * pixels)
-        for mandelbrot_iterations in range(10, 100, 5): 
+        for mandelbrot_iterations in range(40, 50, 5):
             count2 = 0
 
 

@@ -1,7 +1,7 @@
 import glob
 import matplotlib.pyplot as plt
 
-files = glob.glob('results/*.txt')
+files = glob.glob('results_heleen/*.txt')
 
 data = []
 

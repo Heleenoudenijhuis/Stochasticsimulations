@@ -8,7 +8,7 @@ import time
 
 
 
-file = 'results/alwan_hitandmiss.txt'
+file = 'results/heleen_hitandmiss_mandelbrot_darts2.txt'
 WIDTH = 3
 HEIGHT = 3
 XSTART = -2
@@ -32,12 +32,21 @@ if not os.path.exists(file):
     with open(file, 'w') as f:
         f.write('')
 
+mand_input = 50
 
-
-
-for mand_iters in range(190,210,10):
-    for darts in range(10**5, 2*10**6+1, 10**5):
-        for run in range(20):
+for mand_iters in range(1,101,20):
+#if mand_input == 50:
+#    mand_iters = mand_input
+    #darts_input = 10**6
+    #if darts_input == 10**6:
+    #    darts = darts_input
+    darts_vector = [10**3, 10**4, 10**5, 10**6, 10**7, 10**8]
+    for i in range(6):
+        darts = darts_vector[i]
+        run_input = 1000
+        if run_input == 1000:
+            run = run_input
+        #for run in range(100, 1000, 100):
             start = time.time()
             area_count = 0
             for i in range(darts):
