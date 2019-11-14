@@ -35,7 +35,7 @@ if not os.path.exists(file):
 
 
 
-for mand_iters in range(190,210,10):
+for mand_iters in range(10,210,10):
     for darts in range(10**5, 2*10**6+1, 10**5):
         for run in range(20):
             start = time.time()

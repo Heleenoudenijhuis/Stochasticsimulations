@@ -16,6 +16,7 @@ def plot(files):
 
 
 	for file in files:
+		print(file)
 		with open(file, 'r') as f:
 			for line in f:
 				line = line.strip().split(',')
@@ -46,6 +47,7 @@ def plot(files):
 		wanted_data = list(filter(lambda x: x[1] == mandel_iter, plot_data))
 		wanted_data = sorted(wanted_data, key=lambda x: x[0])  
 		x,y,z = zip(*wanted_data)
+		print(np.average(z))
 		ax.plot(x, y, z, 'ko-')
 
 	for dart in darts:
@@ -62,7 +64,14 @@ def plot(files):
 	plt.show()
 
 hitandmiss_files = glob.glob('results/*miss.txt')
-lhs_files = glob.glob('results/*cube.txt')
+random_files = glob.glob('results/*strat.txt')
+random_latin = glob.glob('results/*m_l*.txt')
+median_latin = glob.glob('results/*n_l*.txt')
 
 
-plot(lhs_files)
+
+# plot(random_latin)
+# plot(median_latin)
+
+plot(random_files)
+plot(hitandmiss_files)
