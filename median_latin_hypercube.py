@@ -8,7 +8,7 @@ import time
 
 
 
-file = 'results/alwan_median_latin_hypercube.txt'
+file = 'results/median_latin_hypercube.txt'
 WIDTH = 3
 HEIGHT = 3
 XSTART = -2
@@ -32,11 +32,6 @@ if not os.path.exists('results'):
 if not os.path.exists(file):
     with open(file, 'w') as f:
         f.write('')
-
-
-
-
-
 
 for mand_iters in range(10,201,10):
     for darts in range(10**4, 2*10**5+1, 10**4):
